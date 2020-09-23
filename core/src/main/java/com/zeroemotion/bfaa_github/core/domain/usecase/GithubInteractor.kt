@@ -9,4 +9,16 @@ class GithubInteractor (private val githubRepository: IGithubRepository): Github
         return githubRepository.getSearchUser(q)
     }
 
+    override fun getDetail(user: String): Single<User> {
+        return githubRepository.getDetail(user)
+    }
+
+    override fun getFollowers(user: String): Single<List<User>> {
+        return githubRepository.getFollowers(user)
+    }
+
+    override fun getFollowing(user: String): Single<List<User>> {
+        return githubRepository.getFollowing(user)
+    }
+
 }

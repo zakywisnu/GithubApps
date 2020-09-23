@@ -1,4 +1,3 @@
-include ':feature'
 include ':core'
 include ':app'
 rootProject.name = "BFAA_github"

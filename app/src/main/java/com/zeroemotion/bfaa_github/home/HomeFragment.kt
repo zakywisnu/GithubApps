@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnPreDraw
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
@@ -21,6 +23,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -32,6 +35,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return dataBinding.root
     }
@@ -39,10 +43,31 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         rvSearchUser.apply {
             adapter = homeAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        etSearchUser.addTextChangedListener (object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                val search = etSearchUser.text.toString().toLowerCase(Locale.getDefault())
+                if (search.trim().isNotEmpty()){
+                    viewModel.getUser(search)
+                } else {
+                    homeAdapter.clearData()
+                }
+
+            }
+
+        })
 
 
         observeSearchUser()

@@ -1,14 +1,18 @@
 package com.zeroemotion.bfaa_github.core.di
 
+import androidx.room.Room
 import com.zeroemotion.bfaa_github.core.data.GithubRepository
 import com.zeroemotion.bfaa_github.core.data.source.remote.RemoteDataSource
 import com.zeroemotion.bfaa_github.core.data.source.remote.network.GithubService
+import com.zeroemotion.bfaa_github.core.data.source.local.room.UserDatabase
+import com.zeroemotion.bfaa_github.core.domain.model.User
 import com.zeroemotion.bfaa_github.core.domain.repository.IGithubRepository
 import com.zeroemotion.bfaa_github.core.domain.usecase.GithubInteractor
 import com.zeroemotion.bfaa_github.core.domain.usecase.GithubUseCase
 import com.zeroemotion.bfaa_github.core.utils.GithubConstant.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -32,6 +36,17 @@ val networkModule = module {
             .build()
 
         retrofit.create(GithubService::class.java)
+    }
+}
+
+val databaseModule = module {
+    factory { get<UserDatabase>().userDao() }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            UserDatabase::class.java,"github.db"
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 }
 

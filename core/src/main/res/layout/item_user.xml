@@ -6,12 +6,19 @@
         <variable
             name="user"
             type="com.zeroemotion.bfaa_github.core.domain.model.User" />
+        <variable
+            name="listener"
+            type="com.zeroemotion.bfaa_github.core.utils.CustomOnClick" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        android:tag="@{user.login}"
+        android:onClick="@{listener::onClicked}"
+        android:transitionName="@{String.valueOf(user.userId)}"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,8 +28,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userImage"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:imageUrl="@{user.avatarUrl}"
                 android:src="@drawable/ic_error_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +43,7 @@
                 android:layout_margin="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:text="@{user.login}"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/userId"
@@ -48,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:textSize="16sp"
+                android:text="@{String.valueOf(user.userId)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/userImage"

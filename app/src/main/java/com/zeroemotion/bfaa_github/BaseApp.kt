@@ -1,6 +1,7 @@
 package com.zeroemotion.bfaa_github
 
 import android.app.Application
+import com.zeroemotion.bfaa_github.core.di.databaseModule
 import com.zeroemotion.bfaa_github.core.di.networkModule
 import com.zeroemotion.bfaa_github.core.di.repositoryModule
 import com.zeroemotion.bfaa_github.core.di.usecaseModule
@@ -21,7 +22,8 @@ class BaseApp : Application(){
                     networkModule,
                     repositoryModule,
                     viewModelModule,
-                    usecaseModule
+                    usecaseModule,
+                    databaseModule
                 )
             )
         }

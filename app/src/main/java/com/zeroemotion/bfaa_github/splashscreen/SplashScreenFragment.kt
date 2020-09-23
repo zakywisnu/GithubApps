@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.zeroemotion.bfaa_github.R
 
+@Suppress("DEPRECATION")
 class SplashScreenFragment : Fragment() {
 
     override fun onCreateView(
@@ -16,13 +18,14 @@ class SplashScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         return inflater.inflate(R.layout.fragment_splash_screen, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var handler = Handler()
+        val handler = Handler()
         handler.postDelayed({
             Navigation.findNavController(view).navigate(SplashScreenFragmentDirections.actionSplashScreenFragmentToHomeFragment())
         },3000)
